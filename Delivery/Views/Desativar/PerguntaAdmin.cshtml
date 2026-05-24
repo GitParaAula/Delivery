@@ -1,0 +1,21 @@
+﻿<h1>Escolha uma categoria</h1>
+
+<a href="/Desativar/AdminAtivo">
+    <button type="button">
+        Admins Ativos
+    </button>
+</a>
+
+<a href="/Desativar/AdminDesativo">
+    <button type="button">
+        Admins Desativos
+    </button>
+</a>
+
+@if (TempData["Mensagem"] != null)
+{
+    <script>
+        alert("@TempData["Mensagem"]");
+        window.location.href = "/Home/Index";
+    </script>
+}

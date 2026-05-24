@@ -1,0 +1,46 @@
+﻿@model List<Delivery.Models.Cliente>
+
+<h1>Clientes Desativos</h1>
+
+<table border="1" cellpadding="10">
+
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var cliente in Model)
+        {
+            <tr>
+                <td>@cliente.Nome</td>
+                <td>@cliente.Cpf</td>
+
+                <td>
+                    <a href="/Desativar/AtivarCliente?id=@cliente.ClienteId"
+                       onclick="return confirm('Deseja realmente ativar este cliente?')">
+
+                        <button type="button">
+                            Ativar
+                        </button>
+
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<br />
+
+<a href="/Desativar/PerguntaCliente">
+    <button type="button">
+        Voltar
+    </button>
+</a>

@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="~/css/site.css" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Delivery</title>
@@ -19,12 +20,6 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle"
                                href="#"
@@ -75,14 +70,6 @@
                                     </a>
                                 </li>
 
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Listar"
-                                       asp-action="Carrinho">
-                                        Carrinho
-                                    </a>
-                                </li>
-
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -108,14 +95,6 @@
                                        asp-controller="Listar"
                                        asp-action="Entregador">
                                         Entregador
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Listar"
-                                       asp-action="Cardapio">
-                                        Cardapio
                                     </a>
                                 </li>
 
@@ -204,6 +183,62 @@
                                 </li>
 
                             </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown">
+                                Ativar/Desativar
+                            </a>
+
+                            <ul class="dropdown-menu">
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Desativar"
+                                       asp-action="PerguntaCliente">
+                                        Cliente
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Desativar"
+                                       asp-action="PerguntaRestaurante">
+                                        Restaurante
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Desativar"
+                                       asp-action="Restaurantes">
+                                        Prato
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Desativar"
+                                       asp-action="PerguntaEntregador">
+                                        Entregador
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Desativar"
+                                       asp-action="PerguntaAdmin">
+                                        Admin
+                                    </a>
+                                </li>
+
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Listar" asp-action="Carrinho">Carrinho</a>
+                        </li>
                         </li>
                     </ul>
                 </div>

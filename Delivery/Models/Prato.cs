@@ -9,5 +9,6 @@
         public int RestauranteId { get; set; }
         public Boolean Disponivel { get; set; }
         public string? ImagemArquivo { get; set; }
+        public bool Ativo { get; set; }
     }
 }

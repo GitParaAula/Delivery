@@ -44,6 +44,12 @@ namespace Delivery.Controllers
                         return View("Index");
                     }
 
+                    if (reader["Ativo"] != DBNull.Value && !Convert.ToBoolean(reader["Ativo"]))
+                    {
+                        ViewBag.Erro = "Este registro não está ativo!";
+                        return View("Index");
+                    }
+
                     HttpContext.Session.SetInt32(SessionKeys.UserId, Convert.ToInt32(reader["AdminId"]));
                     HttpContext.Session.SetString(SessionKeys.UserName, reader["Nome"].ToString());
                     HttpContext.Session.SetString(SessionKeys.UserRole, "Admin");
@@ -69,6 +75,12 @@ namespace Delivery.Controllers
                     if (reader["Senha"].ToString() != senha)
                     {
                         ViewBag.Erro = "Senha incorreta.";
+                        return View("Index");
+                    }
+
+                    if (reader["Ativo"] != DBNull.Value && !Convert.ToBoolean(reader["Ativo"]))
+                    {
+                        ViewBag.Erro = "Este registro não está ativo!";
                         return View("Index");
                     }
 
@@ -100,6 +112,12 @@ namespace Delivery.Controllers
                         return View("Index");
                     }
 
+                    if (reader["Ativo"] != DBNull.Value && !Convert.ToBoolean(reader["Ativo"]))
+                    {
+                        ViewBag.Erro = "Este registro não está ativo!";
+                        return View("Index");
+                    }
+
                     HttpContext.Session.SetInt32(SessionKeys.UserId, Convert.ToInt32(reader["EntregadorId"]));
                     HttpContext.Session.SetString(SessionKeys.UserName, reader["Nome"].ToString());
                     HttpContext.Session.SetString(SessionKeys.UserRole, "Entregador");
@@ -125,6 +143,12 @@ namespace Delivery.Controllers
                     if (reader["Senha"].ToString() != senha)
                     {
                         ViewBag.Erro = "Senha incorreta.";
+                        return View("Index");
+                    }
+
+                    if (reader["Ativo"] != DBNull.Value && !Convert.ToBoolean(reader["Ativo"]))
+                    {
+                        ViewBag.Erro = "Este registro não está ativo!";
                         return View("Index");
                     }
 

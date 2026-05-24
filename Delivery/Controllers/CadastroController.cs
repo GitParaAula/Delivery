@@ -1,12 +1,15 @@
 ﻿using AgenciaViagem.Database;
+using Delivery.Autenticacao;
 using Delivery.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 using System.IO;
 
 namespace Delivery.Controllers
 {
+    [SessionAuthorize(RoleAnyOf = "Admin")]
     public class CadastroController : Controller
     {
         [HttpGet]
@@ -264,7 +267,7 @@ namespace Delivery.Controllers
                     ViewBag.Erro = "Este CNPJ já está cadastrado.";
                     return View(restaurante);
                 }
-
+                restaurante.Ativo = true;
                 string query = @"INSERT INTO Restaurante
         (Nome, CNPJ, Endereco, Telefone, Senha, Ativo)
         VALUES

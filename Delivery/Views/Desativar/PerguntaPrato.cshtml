@@ -1,0 +1,28 @@
+﻿<h1>Escolha uma categoria</h1>
+
+@if (ViewBag.ExistePrato == true)
+{
+    <a href="/Desativar/PratoAtivo">
+        <button type="button">
+            Pratos Ativos
+        </button>
+    </a>
+
+    <a href="/Desativar/PratoDesativo">
+        <button type="button">
+            Pratos Desativos
+        </button>
+    </a>
+}
+else
+{
+    <p>Nenhum prato cadastrado neste restaurante.</p>
+}
+
+<br />
+
+<a href="/Desativar/Restaurantes">
+    <button type="button">
+        Voltar
+    </button>
+</a>

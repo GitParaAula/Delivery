@@ -1,0 +1,46 @@
+﻿@model List<Delivery.Models.Entregador>
+
+<h1>Entregadores Ativos</h1>
+
+<table border="1" cellpadding="10">
+
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var entregador in Model)
+        {
+            <tr>
+                <td>@entregador.Nome</td>
+                <td>@entregador.Cpf</td>
+
+                <td>
+                    <a href="/Desativar/DesativarEntregador?id=@entregador.EntregadorId"
+                       onclick="return confirm('Deseja realmente desativar este entregador?')">
+
+                        <button type="button">
+                            Desativar
+                        </button>
+
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<br />
+
+<a href="/Desativar/PerguntaEntregador">
+    <button type="button">
+        Voltar
+    </button>
+</a>

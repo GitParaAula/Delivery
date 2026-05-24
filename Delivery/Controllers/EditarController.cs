@@ -10,6 +10,7 @@ namespace Delivery.Controllers
 {
     public class EditarController : Controller
     {
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult ListarCliente()
         {
             List<Cliente> clientes = new List<Cliente>();
@@ -18,7 +19,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Cliente";
+                string query = "SELECT * FROM Cliente WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -43,7 +44,7 @@ namespace Delivery.Controllers
 
             return View(clientes);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpGet]
         public IActionResult EditarCliente(int id)
         {
@@ -75,7 +76,7 @@ namespace Delivery.Controllers
 
             return View(cliente);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpPost]
         public IActionResult EditarCliente(Cliente cliente)
         {
@@ -146,6 +147,7 @@ namespace Delivery.Controllers
 
             return RedirectToAction("EditarCliente", new { id = cliente.ClienteId });
         }
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult ListarRestaurante()
         {
             List<Restaurante> restaurantes = new List<Restaurante>();
@@ -154,7 +156,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Restaurante";
+                string query = "SELECT * FROM Restaurante WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -178,7 +180,7 @@ namespace Delivery.Controllers
 
             return View(restaurantes);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpGet]
         public IActionResult Restaurante(int id)
         {
@@ -210,7 +212,7 @@ namespace Delivery.Controllers
 
             return View("EditarRestaurante", restaurante);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpPost]
         public IActionResult Restaurante(Restaurante restaurante)
         {
@@ -235,7 +237,7 @@ namespace Delivery.Controllers
                     ViewBag.Erro = "Este CNPJ já está cadastrado.";
                     return View("EditarRestaurante", restaurante);
                 }
-
+                restaurante.Ativo = true;
                 string query = @"UPDATE Restaurante
                          SET
                          Nome = @Nome,
@@ -263,6 +265,7 @@ namespace Delivery.Controllers
 
             return RedirectToAction("Restaurante", new { id = restaurante.RestauranteId });
         }
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult ListarRestauranteP()
         {
             List<Restaurante> restaurantes = new List<Restaurante>();
@@ -271,7 +274,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Restaurante";
+                string query = "SELECT * FROM Restaurante WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -295,7 +298,7 @@ namespace Delivery.Controllers
 
             return View(restaurantes);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult ListarPratos(int restauranteId)
         {
             List<Prato> pratos = new List<Prato>();
@@ -335,7 +338,7 @@ namespace Delivery.Controllers
 
             return View(pratos);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpGet]
         public IActionResult Prato(int id)
         {
@@ -347,7 +350,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string queryRestaurantes = "SELECT * FROM Restaurante";
+                string queryRestaurantes = "SELECT * FROM Restaurante WHERE Ativo = TRUE";
 
                 MySqlCommand cmdRestaurantes = new MySqlCommand(queryRestaurantes, conn);
 
@@ -392,7 +395,7 @@ namespace Delivery.Controllers
 
             return View("EditarPrato", prato);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpPost]
         public IActionResult Prato(Prato prato, IFormFile imagem)
         {
@@ -402,7 +405,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string queryRestaurantes = "SELECT * FROM Restaurante";
+                string queryRestaurantes = "SELECT * FROM Restaurante WHERE Ativo = TRUE";
 
                 MySqlCommand cmdRestaurantes = new MySqlCommand(queryRestaurantes, conn);
 
@@ -488,6 +491,7 @@ namespace Delivery.Controllers
 
             return View("EditarPrato", prato);
         }
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult ListarEntregador()
         {
             List<Entregador> entregadores = new List<Entregador>();
@@ -496,7 +500,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Entregador";
+                string query = "SELECT * FROM Entregador WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -520,7 +524,7 @@ namespace Delivery.Controllers
 
             return View(entregadores);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpGet]
         public IActionResult Entregador(int id)
         {
@@ -552,7 +556,7 @@ namespace Delivery.Controllers
 
             return View("EditarEntregador", entregador);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpPost]
         public IActionResult Entregador(Entregador entregador)
         {
@@ -578,7 +582,7 @@ namespace Delivery.Controllers
 
                     return View("EditarEntregador", entregador);
                 }
-
+                entregador.Ativo = true;
                 string query = @"UPDATE Entregador
                          SET
                          Nome = @Nome,
@@ -606,6 +610,7 @@ namespace Delivery.Controllers
 
             return View("EditarEntregador", entregador);
         }
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult ListarAdmin()
         {
             List<Admin> admins = new List<Admin>();
@@ -614,7 +619,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Admin";
+                string query = "SELECT * FROM Admin WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -635,7 +640,7 @@ namespace Delivery.Controllers
 
             return View(admins);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpGet]
         public IActionResult Admin(int id)
         {
@@ -664,7 +669,7 @@ namespace Delivery.Controllers
 
             return View("EditarAdmin", admin);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         [HttpPost]
         public IActionResult Admin(Admin admin)
         {
@@ -712,6 +717,7 @@ namespace Delivery.Controllers
 
             return View("EditarAdmin", admin);
         }
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult ListarPedido()
         {
             List<dynamic> pedidos = new List<dynamic>();
@@ -770,7 +776,7 @@ WHERE Pedido.ClienteId = @ClienteId";
 
             return View();
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         [HttpGet]
         public IActionResult EditarPedido(int id)
         {
@@ -848,7 +854,7 @@ WHERE Pedido.PedidoId = @Id";
 
             return View(pedido);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         [HttpPost]
         public IActionResult EditarPedido(Pedido pedido)
         {
@@ -930,7 +936,7 @@ WHERE Pedido.PedidoId = @Id";
 
             return View(pedido);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult ListarPedidoItem(int pedidoId)
         {
             List<dynamic> itens = new List<dynamic>();
@@ -979,7 +985,7 @@ WHERE PedidoItem.PedidoId = @PedidoId";
 
             return View();
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         [HttpGet]
         public IActionResult EditarItem(int id)
         {
@@ -1020,7 +1026,7 @@ WHERE PedidoItem.PedidoItemId = @Id";
 
             return View(item);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         [HttpPost]
         public IActionResult EditarItem(PedidoItem item)
         {

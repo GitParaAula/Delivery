@@ -1,0 +1,55 @@
+﻿@if (TempData["Mensagem"] != null)
+{
+    <script>
+        alert("@TempData["Mensagem"]");
+        window.location.href = "/Desativar/Restaurantes";
+    </script>
+}
+
+@model List<Delivery.Models.Prato>
+
+<h1>Pratos Desativos</h1>
+
+<table border="1" cellpadding="10">
+
+    <thead>
+        <tr>
+            <th>Imagem</th>
+            <th>Nome</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var prato in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(prato.ImagemArquivo))
+                    {
+                        <img src="~/@prato.ImagemArquivo" width="80" />
+                    }
+                </td>
+
+                <td>@prato.Nome</td>
+
+                <td>
+                    <a href="/Desativar/AtivarPrato?id=@prato.PratoId"
+                       onclick="return confirm('Deseja realmente ativar este Prato?')">
+
+                        <button type="button">
+                            Ativar
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<br />
+
+<a href="/Desativar/PerguntaPrato">
+    <button type="button">Voltar</button>
+</a>

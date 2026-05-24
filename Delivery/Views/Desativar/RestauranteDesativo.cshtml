@@ -1,0 +1,46 @@
+﻿@model List<Delivery.Models.Restaurante>
+
+<h1>Restaurantes Desativos</h1>
+
+<table border="1" cellpadding="10">
+
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CNPJ</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var restaurante in Model)
+        {
+            <tr>
+                <td>@restaurante.Nome</td>
+                <td>@restaurante.CNPJ</td>
+
+                <td>
+                    <a href="/Desativar/AtivarRestaurante?id=@restaurante.RestauranteId"
+                       onclick="return confirm('Deseja realmente ativar este Restaurante?')">
+
+                        <button type="button">
+                            Ativar
+                        </button>
+
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<br />
+
+<a href="/Desativar/PerguntaRestaurante">
+    <button type="button">
+        Voltar
+    </button>
+</a>

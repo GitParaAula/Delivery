@@ -9,6 +9,7 @@ namespace Delivery.Controllers
 {
     public class ListarController : Controller
     {
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente,Entregador,Restaurante")]
         public IActionResult Restaurante()
         {
             List<Restaurante> restaurantes = new List<Restaurante>();
@@ -17,7 +18,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Restaurante";
+                string query = "SELECT * FROM Restaurante WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -41,6 +42,7 @@ namespace Delivery.Controllers
 
             return View(restaurantes);
         }
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult Cliente()
         {
             List<Cliente> clientes = new List<Cliente>();
@@ -49,7 +51,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Cliente";
+                string query = "SELECT * FROM Cliente WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -74,6 +76,7 @@ namespace Delivery.Controllers
 
             return View(clientes);
         }
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult Entregador()
         {
             List<Entregador> entregadores = new List<Entregador>();
@@ -82,7 +85,7 @@ namespace Delivery.Controllers
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Entregador";
+                string query = "SELECT * FROM Entregador WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -106,7 +109,7 @@ namespace Delivery.Controllers
 
             return View(entregadores);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult Pedido()
         {
             List<dynamic> pedidos = new List<dynamic>();
@@ -156,7 +159,7 @@ namespace Delivery.Controllers
 
             return View();
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult PedidoItem(int pedidoId)
         {
             List<dynamic> itens = new List<dynamic>();
@@ -200,7 +203,7 @@ WHERE PedidoItem.PedidoId = @PedidoId";
 
             return View();
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin")]
         public IActionResult Admin()
         {
             List<Admin> admins = new List<Admin>();
@@ -209,7 +212,7 @@ WHERE PedidoItem.PedidoId = @PedidoId";
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
-                string query = "SELECT * FROM Admin";
+                string query = "SELECT * FROM Admin WHERE Ativo = TRUE";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -230,7 +233,7 @@ WHERE PedidoItem.PedidoId = @PedidoId";
 
             return View(admins);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente,Entregador,Restaurante")]
         public IActionResult Cardapio(int? restauranteId)
         {
             if (restauranteId == null)
@@ -274,12 +277,13 @@ WHERE PedidoItem.PedidoId = @PedidoId";
 
             return View(pratos);
         }
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public static class CarrinhoStorage
         {
             public static List<Carrinho> Itens = new List<Carrinho>();
             public static int? RestauranteAtual = null;
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult AdicionarCarrinho(int pratoId, int quantidade)
         {
             Conexao conexao = new Conexao();
@@ -342,12 +346,12 @@ WHERE PedidoItem.PedidoId = @PedidoId";
             TempData["Sucesso"] = "Item adicionado ao carrinho";
             return RedirectToAction("Cardapio", new { restauranteId = prato.RestauranteId });
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult Carrinho()
         {
             return View(CarrinhoStorage.Itens);
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult RemoverItem(int pratoId)
         {
             var item = CarrinhoStorage.Itens.FirstOrDefault(x => x.PratoId == pratoId);
@@ -360,7 +364,7 @@ WHERE PedidoItem.PedidoId = @PedidoId";
 
             return RedirectToAction("Carrinho");
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult AtualizarQuantidade(int pratoId, int quantidade)
         {
             var item = CarrinhoStorage.Itens.FirstOrDefault(x => x.PratoId == pratoId);
@@ -372,7 +376,7 @@ WHERE PedidoItem.PedidoId = @PedidoId";
 
             return RedirectToAction("Carrinho");
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         public IActionResult LimparCarrinho()
         {
             CarrinhoStorage.Itens.Clear();
@@ -380,7 +384,7 @@ WHERE PedidoItem.PedidoId = @PedidoId";
 
             return RedirectToAction("Carrinho");
         }
-
+        [SessionAuthorize(RoleAnyOf = "Admin,Cliente")]
         [HttpPost]
         public IActionResult FinalizarPedido()
         {
