@@ -1,0 +1,94 @@
+﻿@model Delivery.Models.Pedido
+
+<h1>Cadastro de Cliente</h1>
+
+@if (ViewBag.Sucesso != null)
+{
+    <script>
+        alert("Dados salvos com sucesso");
+        window.location.href = "/Home/Index";
+    </script>
+}
+
+@if (ViewBag.Erro != null)
+{
+    <div style="color:red;">
+        @ViewBag.Erro
+    </div>
+}
+
+<form asp-action="EditarPedido" method="post">
+
+    <input type="hidden" asp-for="PedidoId" />
+
+    <div>
+        <label>Número do pedido</label>
+        <input type="number"
+               asp-for="PedidoId"
+               readonly />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Restaurante</label>
+        <input type="text"
+               value="@ViewBag.RestauranteNome"
+               readonly />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Entregador</label>
+
+        <select asp-for="EntregadorId">
+
+            @foreach (var item in ViewBag.Entregadores)
+            {
+                <option value="@item.Value">
+                    @item.Text
+                </option>
+            }
+
+        </select>
+    </div>
+
+    <br />
+
+    <div>
+        <label>Data Pedido</label>
+        <input type="text"
+               value="@Model.DataPedido"
+               readonly />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Status</label>
+        <input type="text"
+               asp-for="Status"
+               readonly />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Valor Total</label>
+        <input type="number"
+               asp-for="ValorTotal"
+               readonly />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Salvar edição
+    </button>
+
+    <a href="/Editar/ListarPedido">
+        <button type="button">Voltar</button>
+    </a>
+
+</form>

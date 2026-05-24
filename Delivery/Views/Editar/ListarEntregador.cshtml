@@ -1,0 +1,51 @@
+﻿@model List<Delivery.Models.Entregador>
+
+<h1>Lista de Entregadores</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Veículo</th>
+            <th>Senha</th>
+            <th>CPF</th>
+            <th>Ativo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var entregador in Model)
+        {
+            <tr>
+                <td>@entregador.Nome</td>
+                <td>@entregador.Telefone</td>
+                <td>@entregador.Veiculo</td>
+                <td>@entregador.Senha</td>
+                <td>@entregador.Cpf</td>
+                <td>@entregador.Ativo</td>
+
+                <td>
+                    <a asp-controller="Editar"
+                       asp-action="Entregador"
+                       asp-route-id="@entregador.EntregadorId">
+
+                        <button>
+                            Editar
+                        </button>
+
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+
+<a asp-controller="Home" asp-action="Index">
+    <button>
+        Voltar
+    </button>
+</a>

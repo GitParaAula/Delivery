@@ -1,0 +1,43 @@
+﻿@model List<Delivery.Models.Cliente>
+
+<h1>Lista de Clientes</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Endereço</th>
+            <th>Senha</th>
+            <th>CPF</th>
+            <th>Data Cadastro</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var cliente in Model)
+        {
+            <tr>
+                <td>@cliente.Nome</td>
+                <td>@cliente.Email</td>
+                <td>@cliente.Telefone</td>
+                <td>@cliente.Endereco</td>
+                <td>@cliente.Senha</td>
+                <td>@cliente.Cpf</td>
+                <td>@cliente.DataCadastro</td>
+
+                <td>
+                    <a asp-controller="Editar"
+                       asp-action="EditarCliente"
+                       asp-route-id="@cliente.ClienteId">
+                        <button>
+                            Editar
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

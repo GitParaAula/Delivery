@@ -1,0 +1,101 @@
+﻿@model Delivery.Models.Prato
+
+<h1>Cadastro de Prato</h1>
+
+@if (ViewBag.Sucesso != null)
+{
+    <script>
+        alert("Dados salvos com sucesso");
+        window.location.href = "/Home/Index";
+    </script>
+}
+
+@if (ViewBag.Erro != null)
+{
+    <div style="color:red;">
+        @ViewBag.Erro
+    </div>
+}
+
+<form asp-action="Prato" method="post" enctype="multipart/form-data">
+
+    <input type="hidden" asp-for="PratoId" />
+
+    <input type="hidden" asp-for="ImagemArquivo" />
+
+    <div>
+        <label>Nome</label>
+        <input type="text" asp-for="Nome" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Descrição</label>
+        <input type="text" asp-for="Descricao" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Preço</label>
+        <input type="number" step="0.01" asp-for="Preco" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Restaurante</label>
+
+        <select asp-for="RestauranteId" required>
+
+            <option value="">
+                Selecione um restaurante
+            </option>
+
+            @foreach (var item in ViewBag.Restaurantes)
+            {
+                <option value="@item.Value">
+                    @item.Text
+                </option>
+            }
+
+        </select>
+    </div>
+
+    <br />
+
+    <div>
+        <label>Disponível</label>
+        <input type="checkbox" asp-for="Disponivel" />
+    </div>
+
+    <br />
+
+    @if (!string.IsNullOrEmpty(Model.ImagemArquivo))
+    {
+        <div>
+            <img src="~/@Model.ImagemArquivo"
+                 width="150"
+                 height="150"
+                 style="object-fit:cover; border-radius:10px;" />
+        </div>
+
+        <br />
+    }
+
+    <div>
+        <label>Imagem do prato</label>
+
+        <input type="file"
+               name="imagem"
+               accept="image/*" />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Salvar alterações
+    </button>
+
+</form>

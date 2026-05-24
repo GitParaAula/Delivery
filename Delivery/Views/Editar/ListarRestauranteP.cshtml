@@ -1,0 +1,39 @@
+﻿@model List<Delivery.Models.Restaurante>
+
+<h1>Selecione um restaurante</h1>
+
+@if (Model.Count == 0)
+{
+    <p>Nenhum restaurante cadastrado.</p>
+}
+else
+{
+    @foreach (var restaurante in Model)
+    {
+        <div>
+
+            <strong>@restaurante.Nome</strong>
+
+            <a asp-controller="Editar"
+               asp-action="ListarPratos"
+               asp-route-restauranteId="@restaurante.RestauranteId">
+
+                <button>
+                    Consultar cardapio
+                </button>
+
+            </a>
+
+        </div>
+
+        <br />
+    }
+}
+
+<br />
+
+<a asp-controller="Home" asp-action="Index">
+    <button>
+        Voltar
+    </button>
+</a>

@@ -1,0 +1,75 @@
+﻿@model Delivery.Models.Cliente
+
+<h1>Edição de Cliente</h1>
+
+@if (ViewBag.Erro != null)
+{
+    <div style="color:red;">
+        @ViewBag.Erro
+    </div>
+}
+
+@if (TempData["Sucesso"] != null)
+{
+    <script>
+        alert("@TempData["Sucesso"]");
+
+        window.location.href = "/Home/Index";
+    </script>
+}
+
+<form asp-action="EditarCliente" method="post">
+
+    <input type="hidden" asp-for="ClienteId" />
+
+    <div>
+        <label>Nome</label>
+        <input type="text" asp-for="Nome" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Email</label>
+        <input type="email" asp-for="Email" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Telefone</label>
+        <input type="text" asp-for="Telefone" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Endereço</label>
+        <input type="text" asp-for="Endereco" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Senha</label>
+
+        <input type="password"
+               name="Senha"
+               value="@Model.Senha"
+               required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>CPF</label>
+        <input type="number" asp-for="Cpf" required />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Salvar edição
+    </button>
+
+</form>

@@ -1,0 +1,56 @@
+﻿@model Delivery.Models.PedidoItem
+
+<h1>Cadastro de Cliente</h1>
+
+@if (ViewBag.Sucesso != null)
+{
+    <script>
+        alert("Dados salvos com sucesso");
+        window.location.href = "/Home/Index";
+    </script>
+}
+
+@if (ViewBag.Erro != null)
+{
+    <div style="color:red;">
+        @ViewBag.Erro
+    </div>
+}
+
+<form asp-action="EditarItem" method="post">
+
+    <input type="hidden" asp-for="PedidoItemId" />
+
+    <div>
+        <label>Número do pedido</label>
+        <input type="number" asp-for="PedidoId" readonly />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Prato</label>
+        <input type="text" value="@ViewBag.PratoNome" readonly />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Quantidade</label>
+        <input type="number" asp-for="Quantidade" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Preço Unitário</label>
+        <input type="number" asp-for="PrecoUnitario" readonly />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Salvar edição
+    </button>
+
+</form>

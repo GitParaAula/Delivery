@@ -1,0 +1,79 @@
+﻿@model Delivery.Models.Entregador
+
+<h1>Cadastro de Entregador</h1>
+
+@if (ViewBag.Sucesso != null)
+{
+    <script>
+
+        let voltar = confirm("Dados salvos com sucesso");
+
+        if (voltar)
+        {
+            window.location.href = "/Home/Index";
+        }
+
+    </script>
+}
+
+@if (ViewBag.Erro != null)
+{
+    <div style="color:red;">
+        @ViewBag.Erro
+    </div>
+}
+
+<form asp-action="Entregador" method="post">
+
+    <input type="hidden" asp-for="EntregadorId" />
+
+    <div>
+        <label>Nome</label>
+        <input type="text" asp-for="Nome" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Telefone</label>
+        <input type="text" asp-for="Telefone" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Veículo</label>
+        <input type="text" asp-for="Veiculo" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Senha</label>
+        <input type="password"
+               name="Senha"
+               value="@Model.Senha"
+               required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>CPF</label>
+        <input type="number" asp-for="Cpf" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Ativo</label>
+        <input type="checkbox" asp-for="Ativo" />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Salvar edição
+    </button>
+
+</form>

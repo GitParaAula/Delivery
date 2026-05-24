@@ -1,0 +1,37 @@
+﻿@model List<Delivery.Models.Admin>
+
+<h1>Lista de Admins</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Senha</th>
+            <th>CPF</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var admin in Model)
+        {
+            <tr>
+                <td>@admin.Nome</td>
+                <td>@admin.Senha</td>
+                <td>@admin.Cpf</td>
+
+                <td>
+                    <a asp-controller="Editar"
+                       asp-action="Admin"
+                       asp-route-id="@admin.AdminId">
+
+                        <button>
+                            Editar
+                        </button>
+
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
