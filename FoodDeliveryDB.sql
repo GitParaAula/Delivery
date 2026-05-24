@@ -79,3 +79,8 @@ CREATE TABLE PedidoItem (
     FOREIGN KEY (PedidoId) REFERENCES Pedido(PedidoId),
     FOREIGN KEY (PratoId) REFERENCES Prato(PratoId)
 );
+
+ALTER TABLE Prato
+ADD COLUMN ImagemArquivo VARCHAR(255) NULL AFTER Disponivel;
+
+select * from prato

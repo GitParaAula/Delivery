@@ -41,6 +41,196 @@ namespace Delivery.Controllers
 
             return View(restaurantes);
         }
+        public IActionResult Cliente()
+        {
+            List<Cliente> clientes = new List<Cliente>();
+
+            Conexao conexao = new Conexao();
+
+            using (MySqlConnection conn = conexao.GetConnection())
+            {
+                string query = "SELECT * FROM Cliente";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Cliente cliente = new Cliente();
+
+                    cliente.ClienteId = Convert.ToInt32(reader["ClienteId"]);
+                    cliente.Nome = reader["Nome"].ToString();
+                    cliente.Email = reader["Email"].ToString();
+                    cliente.Telefone = reader["Telefone"].ToString();
+                    cliente.Endereco = reader["Endereco"].ToString();
+                    cliente.Senha = reader["Senha"].ToString();
+                    cliente.Cpf = Convert.ToInt32(reader["Cpf"]);
+                    cliente.DataCadastro = Convert.ToDateTime(reader["DataCadastro"]);
+
+                    clientes.Add(cliente);
+                }
+            }
+
+            return View(clientes);
+        }
+        public IActionResult Entregador()
+        {
+            List<Entregador> entregadores = new List<Entregador>();
+
+            Conexao conexao = new Conexao();
+
+            using (MySqlConnection conn = conexao.GetConnection())
+            {
+                string query = "SELECT * FROM Entregador";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Entregador entregador = new Entregador();
+
+                    entregador.EntregadorId = Convert.ToInt32(reader["EntregadorId"]);
+                    entregador.Nome = reader["Nome"].ToString();
+                    entregador.Telefone = reader["Telefone"].ToString();
+                    entregador.Veiculo = reader["Veiculo"].ToString();
+                    entregador.Senha = reader["Senha"].ToString();
+                    entregador.Cpf = Convert.ToInt32(reader["Cpf"]);
+                    entregador.Ativo = Convert.ToBoolean(reader["Ativo"]);
+
+                    entregadores.Add(entregador);
+                }
+            }
+
+            return View(entregadores);
+        }
+
+        public IActionResult Pedido()
+        {
+            List<dynamic> pedidos = new List<dynamic>();
+
+            int? clienteId = HttpContext.Session.GetInt32(SessionKeys.UserId);
+
+            Conexao conexao = new Conexao();
+
+            using (MySqlConnection conn = conexao.GetConnection())
+            {
+                string query = @"
+        SELECT 
+            Pedido.PedidoId,
+            Pedido.DataPedido,
+            Pedido.Status,
+            Pedido.ValorTotal,
+            Restaurante.Nome AS RestauranteNome,
+            Entregador.Nome AS EntregadorNome
+        FROM Pedido
+        INNER JOIN Restaurante 
+            ON Pedido.RestauranteId = Restaurante.RestauranteId
+        LEFT JOIN Entregador 
+            ON Pedido.EntregadorId = Entregador.EntregadorId
+        WHERE Pedido.ClienteId = @ClienteId";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@ClienteId", clienteId);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    pedidos.Add(new
+                    {
+                        PedidoId = Convert.ToInt32(reader["PedidoId"]),
+                        DataPedido = Convert.ToDateTime(reader["DataPedido"]),
+                        Status = reader["Status"].ToString(),
+                        ValorTotal = Convert.ToDecimal(reader["ValorTotal"]),
+                        RestauranteNome = reader["RestauranteNome"].ToString(),
+                        EntregadorNome = reader["EntregadorNome"].ToString()
+                    });
+                }
+            }
+
+            ViewBag.Pedidos = pedidos;
+
+            return View();
+        }
+
+        public IActionResult PedidoItem(int pedidoId)
+        {
+            List<dynamic> itens = new List<dynamic>();
+
+            Conexao conexao = new Conexao();
+
+            using (MySqlConnection conn = conexao.GetConnection())
+            {
+                string query = @"
+SELECT
+    Prato.Nome AS PratoNome,
+    Prato.ImagemArquivo,
+    PedidoItem.Quantidade,
+    PedidoItem.PrecoUnitario
+FROM PedidoItem
+INNER JOIN Prato
+    ON PedidoItem.PratoId = Prato.PratoId
+WHERE PedidoItem.PedidoId = @PedidoId";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@PedidoId", pedidoId);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    itens.Add(new
+                    {
+                        PratoNome = reader["PratoNome"].ToString(),
+                        ImagemArquivo = reader["ImagemArquivo"].ToString(),
+                        Quantidade = Convert.ToInt32(reader["Quantidade"]),
+                        PrecoUnitario = Convert.ToDecimal(reader["PrecoUnitario"])
+                    });
+                }
+            }
+
+            ViewBag.Itens = itens;
+
+            ViewBag.PedidoId = pedidoId;
+
+            return View();
+        }
+
+        public IActionResult Admin()
+        {
+            List<Admin> admins = new List<Admin>();
+
+            Conexao conexao = new Conexao();
+
+            using (MySqlConnection conn = conexao.GetConnection())
+            {
+                string query = "SELECT * FROM Admin";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Admin admin = new Admin();
+
+                    admin.AdminId = Convert.ToInt32(reader["AdminId"]);
+                    admin.Nome = reader["Nome"].ToString();
+                    admin.Senha = reader["Senha"].ToString();
+                    admin.Cpf = Convert.ToInt32(reader["Cpf"]);
+
+                    admins.Add(admin);
+                }
+            }
+
+            return View(admins);
+        }
+
         public IActionResult Cardapio(int? restauranteId)
         {
             if (restauranteId == null)
@@ -76,6 +266,7 @@ namespace Delivery.Controllers
                     prato.Preco = Convert.ToDecimal(reader["Preco"]);
                     prato.RestauranteId = Convert.ToInt32(reader["RestauranteId"]);
                     prato.Disponivel = Convert.ToBoolean(reader["Disponivel"]);
+                    prato.ImagemArquivo = reader["ImagemArquivo"].ToString();
 
                     pratos.Add(prato);
                 }
@@ -110,7 +301,8 @@ namespace Delivery.Controllers
                         PratoId = Convert.ToInt32(reader["PratoId"]),
                         Nome = reader["Nome"].ToString(),
                         Preco = Convert.ToDecimal(reader["Preco"]),
-                        RestauranteId = Convert.ToInt32(reader["RestauranteId"])
+                        RestauranteId = Convert.ToInt32(reader["RestauranteId"]),
+                        ImagemArquivo = reader["ImagemArquivo"].ToString()
                     };
                 }
             }
@@ -118,7 +310,6 @@ namespace Delivery.Controllers
             if (prato == null)
                 return RedirectToAction("Cardapio", new { restauranteId = prato.RestauranteId });
 
-            // regra restaurante único
             if (CarrinhoStorage.RestauranteAtual != null &&
                 CarrinhoStorage.RestauranteAtual != prato.RestauranteId)
             {
@@ -143,7 +334,8 @@ namespace Delivery.Controllers
                     Nome = prato.Nome,
                     PrecoUnitario = prato.Preco,
                     Quantidade = quantidade,
-                    RestauranteId = prato.RestauranteId
+                    RestauranteId = prato.RestauranteId,
+                    ImagemArquivo = prato.ImagemArquivo
                 });
             }
 
@@ -269,6 +461,5 @@ namespace Delivery.Controllers
             TempData["MensagemSucesso"] = "Pedido realizado com sucesso!";
             return RedirectToAction("Carrinho");
         }
-
     }
 }

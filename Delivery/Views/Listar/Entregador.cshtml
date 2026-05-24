@@ -1,0 +1,30 @@
+﻿@model List<Delivery.Models.Entregador>
+
+<h1>Lista de Entregadores</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Veículo</th>
+            <th>Senha</th>
+            <th>CPF</th>
+            <th>Ativo</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var entregador in Model)
+        {
+            <tr>
+                <td>@entregador.Nome</td>
+                <td>@entregador.Telefone</td>
+                <td>@entregador.Veiculo</td>
+                <td>@entregador.Senha</td>
+                <td>@entregador.Cpf</td>
+                <td>@entregador.Ativo</td>
+            </tr>
+        }
+    </tbody>
+</table>

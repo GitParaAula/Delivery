@@ -1,0 +1,39 @@
+﻿<h1>Itens do pedido @ViewBag.PedidoId</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Imagem</th>
+            <th>Prato</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in ViewBag.Itens)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImagemArquivo))
+                    {
+                        <img src="~/@item.ImagemArquivo"
+                             width="100"
+                             height="100"
+                             style="object-fit:cover; border-radius:10px;" />
+                    }
+                </td>
+
+                <td>@item.PratoNome</td>
+                <td>@item.Quantidade</td>
+                <td>@item.PrecoUnitario</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+
+<a href="/Listar/Pedido">
+    <button>Voltar</button>
+</a>

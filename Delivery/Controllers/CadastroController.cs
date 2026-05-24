@@ -3,6 +3,7 @@ using Delivery.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MySql.Data.MySqlClient;
+using System.IO;
 
 namespace Delivery.Controllers
 {
@@ -152,12 +153,38 @@ namespace Delivery.Controllers
         }
 
         [HttpPost]
-        public IActionResult Prato(Prato prato)
+        public IActionResult Prato(Prato prato, IFormFile? imagem)
         {
             Conexao conexao = new Conexao();
 
             using (MySqlConnection conn = conexao.GetConnection())
             {
+                string? caminhoImagem = null;
+
+                if (imagem != null && imagem.Length > 0)
+                {
+                    var extensao = Path.GetExtension(imagem.FileName);
+
+                    var nomeArquivo = $"{Guid.NewGuid()}{extensao}";
+
+                    var pasta = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "pratos"
+                    );
+
+                    Directory.CreateDirectory(pasta);
+
+                    var caminhoCompleto = Path.Combine(pasta, nomeArquivo);
+
+                    using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
+                    {
+                        imagem.CopyTo(stream);
+                    }
+
+                    caminhoImagem = Path.Combine("pratos", nomeArquivo)
+                        .Replace("\\", "/");
+                }
                 if (string.IsNullOrEmpty(prato.Nome) || prato.Preco <= 0 || prato.RestauranteId <= 0)
                 {
                     ViewBag.Erro = "Preencha todos os campos obrigatórios.";
@@ -180,9 +207,9 @@ namespace Delivery.Controllers
                 }
 
                 string query = @"INSERT INTO Prato
-                                (Nome, Descricao, Preco, RestauranteId, Disponivel)
-                                VALUES
-                                (@Nome, @Descricao, @Preco, @RestauranteId, @Disponivel)";
+                (Nome, Descricao, Preco, RestauranteId, Disponivel, ImagemArquivo)
+                VALUES
+                (@Nome, @Descricao, @Preco, @RestauranteId, @Disponivel, @ImagemArquivo)";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -191,6 +218,7 @@ namespace Delivery.Controllers
                 cmd.Parameters.AddWithValue("@Preco", prato.Preco);
                 cmd.Parameters.AddWithValue("@RestauranteId", prato.RestauranteId);
                 cmd.Parameters.AddWithValue("@Disponivel", prato.Disponivel);
+                cmd.Parameters.AddWithValue("@ImagemArquivo", caminhoImagem);
 
                 cmd.ExecuteNonQuery();
             }

@@ -7,7 +7,7 @@
         public decimal PrecoUnitario { get; set; }
         public int Quantidade { get; set; }
         public int RestauranteId { get; set; }
-
+        public string? ImagemArquivo { get; set; }
         public decimal TotalItem => PrecoUnitario * Quantidade;
     }
 }

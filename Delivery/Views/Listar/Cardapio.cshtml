@@ -38,7 +38,19 @@ else
 {
     @foreach (var prato in Model)
     {
-        <div style="margin-bottom:20px;">
+        <div style="margin-bottom:20px; display:flex; gap:20px; align-items:flex-start;">
+
+            <div>
+                @if (!string.IsNullOrEmpty(prato.ImagemArquivo))
+                {
+                    <img src="~/@prato.ImagemArquivo"
+                         width="150"
+                         height="150"
+                         style="object-fit:cover; border-radius:10px;" />
+                }
+            </div>
+
+            <div>
 
             <strong>@prato.Nome</strong>
             <br />
@@ -73,6 +85,8 @@ else
                     Adicionar ao carrinho
                 </button>
             </a>
+
+            </div>
 
         </div>
     }

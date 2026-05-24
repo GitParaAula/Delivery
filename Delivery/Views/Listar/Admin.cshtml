@@ -1,0 +1,24 @@
+﻿@model List<Delivery.Models.Admin>
+
+<h1>Lista de Admins</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Senha</th>
+            <th>CPF</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var admin in Model)
+        {
+            <tr>
+                <td>@admin.Nome</td>
+                <td>@admin.Senha</td>
+                <td>@admin.Cpf</td>
+            </tr>
+        }
+    </tbody>
+</table>

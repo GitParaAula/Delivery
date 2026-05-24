@@ -8,5 +8,6 @@
         public Decimal Preco {  get; set; }
         public int RestauranteId { get; set; }
         public Boolean Disponivel { get; set; }
+        public string? ImagemArquivo { get; set; }
     }
 }

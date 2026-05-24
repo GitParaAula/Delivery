@@ -9,7 +9,7 @@
     </div>
 }
 
-<form asp-action="Prato" method="post">
+<form asp-action="Prato" method="post" enctype="multipart/form-data">
 
     <div>
         <label>Nome</label>
@@ -51,7 +51,15 @@
     </div>
 
     <br />
+    <div>
+        <label>Imagem do prato</label>
 
+        <input type="file"
+               name="imagem"
+               accept="image/*" />
+    </div>
+
+    <br />
     <button type="submit">
         Cadastrar
     </button>

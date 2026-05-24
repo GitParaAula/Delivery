@@ -1,0 +1,33 @@
+﻿<h1>Lista de Pedidos</h1>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Número do pedido</th>
+            <th>Data Pedido</th>
+            <th>Restaurante</th>
+            <th>Entregador</th>
+            <th>Status</th>
+            <th>Valor Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var pedido in ViewBag.Pedidos)
+        {
+        <tr>
+            <td>@pedido.PedidoId</td>
+            <td>@pedido.DataPedido</td>
+            <td>@pedido.RestauranteNome</td>
+            <td>@pedido.EntregadorNome</td>
+            <td>@pedido.Status</td>
+            <td>@pedido.ValorTotal</td>
+        </tr>
+        <td>
+            <a href="/Listar/PedidoItem?pedidoId=@pedido.PedidoId">
+                <button>Ver itens</button>
+            </a>
+        </td>
+        }
+    </tbody>
+</table>
