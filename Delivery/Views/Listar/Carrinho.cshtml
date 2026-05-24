@@ -1,4 +1,13 @@
-﻿@model List<Delivery.Models.Carrinho>
+﻿@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger">@TempData["MensagemErro"]</div>
+}
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success">@TempData["MensagemSucesso"]</div>
+}
+
+@model List<Delivery.Models.Carrinho>
 
 <h1 style="text-align:center;">Carrinho</h1>
 
@@ -71,9 +80,30 @@ else
     <br />
     <br />
 
-    <button onclick="alert('Finalizar pedido (não implementado)')">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmarModal">
         Finalizar pedido
     </button>
+
+    <div class="modal fade" id="confirmarModal" tabindex="-1" aria-labelledby="confirmarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmarModalLabel">Confirmar Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    Deseja realmente finalizar o pedido?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form asp-action="FinalizarPedido" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <a asp-controller="Home" asp-action="Index">
         <button>Voltar</button>

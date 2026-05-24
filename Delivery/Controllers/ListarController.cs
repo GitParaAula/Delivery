@@ -3,6 +3,7 @@ using Delivery.Models;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Delivery.Models;
+using Delivery.Autenticacao;
 
 namespace Delivery.Controllers
 {
@@ -187,5 +188,87 @@ namespace Delivery.Controllers
 
             return RedirectToAction("Carrinho");
         }
+
+        [HttpPost]
+        public IActionResult FinalizarPedido()
+        {
+            var tipoUsuario = HttpContext.Session.GetString(SessionKeys.UserRole);
+            if (!string.Equals(tipoUsuario, "Cliente", StringComparison.OrdinalIgnoreCase))
+            {
+                TempData["MensagemErro"] = "Apenas clientes podem fazer pedidos.";
+                return RedirectToAction("Carrinho");
+            }
+            int? clienteId = HttpContext.Session.GetInt32(SessionKeys.UserId);
+            if (clienteId == null)
+            {
+                TempData["MensagemErro"] = "Sessão expirada. Faça login novamente.";
+                return RedirectToAction("Carrinho");
+            }
+
+            Conexao conexao = new Conexao();
+            int entregadorId = 0;
+            using (MySqlConnection conn = conexao.GetConnection())
+            {
+                string query = "SELECT EntregadorId FROM Entregador WHERE Ativo = TRUE";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                var entregadores = new List<int>();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        entregadores.Add(Convert.ToInt32(reader["EntregadorId"]));
+                    }
+                }
+                if (entregadores.Count == 0)
+                {
+                    TempData["MensagemErro"] = "Nenhum entregador disponível no momento.";
+                    return RedirectToAction("Carrinho");
+                }
+                var random = new Random();
+                entregadorId = entregadores[random.Next(entregadores.Count)];
+            }
+
+            if (CarrinhoStorage.Itens.Count == 0)
+            {
+                TempData["MensagemErro"] = "Carrinho vazio.";
+                return RedirectToAction("Carrinho");
+            }
+            int restauranteId = CarrinhoStorage.Itens.First().RestauranteId;
+            decimal valorTotal = CarrinhoStorage.Itens.Sum(i => i.Quantidade * i.PrecoUnitario);
+
+            int pedidoId = 0;
+            using (MySqlConnection conn = conexao.GetConnection())
+            {
+                string insertPedido = @"INSERT INTO Pedido (ClienteId, RestauranteId, EntregadorId, ValorTotal, Status, DataPedido)
+                                VALUES (@ClienteId, @RestauranteId, @EntregadorId, @ValorTotal, 'Pendente', NOW());
+                                SELECT LAST_INSERT_ID();";
+                MySqlCommand cmd = new MySqlCommand(insertPedido, conn);
+                cmd.Parameters.AddWithValue("@ClienteId", clienteId);
+                cmd.Parameters.AddWithValue("@RestauranteId", restauranteId);
+                cmd.Parameters.AddWithValue("@EntregadorId", entregadorId);
+                cmd.Parameters.AddWithValue("@ValorTotal", valorTotal);
+
+                pedidoId = Convert.ToInt32(cmd.ExecuteScalar());
+
+                foreach (var item in CarrinhoStorage.Itens)
+                {
+                    string insertItem = @"INSERT INTO PedidoItem (PedidoId, PratoId, Quantidade, PrecoUnitario)
+                                  VALUES (@PedidoId, @PratoId, @Quantidade, @PrecoUnitario)";
+                    MySqlCommand cmdItem = new MySqlCommand(insertItem, conn);
+                    cmdItem.Parameters.AddWithValue("@PedidoId", pedidoId);
+                    cmdItem.Parameters.AddWithValue("@PratoId", item.PratoId);
+                    cmdItem.Parameters.AddWithValue("@Quantidade", item.Quantidade);
+                    cmdItem.Parameters.AddWithValue("@PrecoUnitario", item.PrecoUnitario);
+                    cmdItem.ExecuteNonQuery();
+                }
+            }
+
+            CarrinhoStorage.Itens.Clear();
+            CarrinhoStorage.RestauranteAtual = null;
+
+            TempData["MensagemSucesso"] = "Pedido realizado com sucesso!";
+            return RedirectToAction("Carrinho");
+        }
+
     }
 }
