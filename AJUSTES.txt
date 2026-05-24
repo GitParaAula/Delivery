@@ -1,0 +1,12 @@
+-Criar as tabelas no banco de dados (PRONTA)
+-Criar o projeto no Visual Studio (Asp.net + C#) (PRONTA)
+-Criar um sistema de login com restrições (a sua escolha)
+-Criar o cadastro de cada tabela
+-Criar a listagem de cada tabela
+-Permitir a edição dos dados
+-Efetuar o cadastro de, pelo menos, 1 foto
+-Efetuar a exclusão sem apagar o dado do banco (exclusão por status)
+
+FALTA ARRUMAR QUANTIDADE SEMPRE EM 0
+CARRINHO SEMPRE ADICIONANDO UM
+MENSAGEM DE LOJA DIFERENTE BUGADA

@@ -1,0 +1,131 @@
+﻿@model List<Delivery.Models.Prato>
+
+<h1>Cardápio</h1>
+@if (TempData["Sucesso"] != null)
+{
+    <script>
+        alert("@TempData["Sucesso"]");
+    </script>
+}
+
+@if (TempData["Erro"] != null)
+{
+    <script>
+        alert("@Html.Raw(TempData["Erro"])");
+    </script>
+}
+@if (ViewBag.Erro != null)
+{
+    <div>
+        @ViewBag.Erro
+    </div>
+
+    <br />
+
+    <a asp-controller="Listar" asp-action="Restaurante">
+        <button>
+            Selecionar Restaurante
+        </button>
+    </a>
+
+    return;
+}
+else if (Model.Count == 0)
+{
+    <p>Este restaurante não possui pratos cadastrados.</p>
+}
+else
+{
+    @foreach (var prato in Model)
+    {
+        <div style="margin-bottom:20px;">
+
+            <strong>@prato.Nome</strong>
+            <br />
+            <span>@prato.Descricao</span>
+            <br />
+            <span>R$ @prato.Preco</span>
+            <br /><br />
+
+            <button type="button"
+                    onclick="diminuirQuantidade(@prato.PratoId)">
+                -
+            </button>
+
+            <input type="number"
+                   id="quantidade-@prato.PratoId"
+                   value="0"
+                   min="0"
+                   readonly
+                   style="width:50px; text-align:center;" />
+
+            <button type="button"
+                    onclick="aumentarQuantidade(@prato.PratoId)">
+                +
+            </button>
+
+            <a href="#"
+               id="link-@prato.PratoId"
+               onclick="return adicionarAoCarrinho(@prato.PratoId);">
+                <button type="button"
+                        id="botao-@prato.PratoId"
+                        disabled>
+                    Adicionar ao carrinho
+                </button>
+            </a>
+
+        </div>
+    }
+}
+
+<br />
+
+<a asp-controller="Listar" asp-action="Restaurante">
+    <button>
+        Voltar
+    </button>
+</a>
+
+<script>
+    function aumentarQuantidade(pratoId) {
+        let input = document.getElementById("quantidade-" + pratoId);
+        let valor = parseInt(input.value);
+        valor++;
+        input.value = valor;
+        atualizarBotao(pratoId);
+    }
+
+    function diminuirQuantidade(pratoId) {
+        let input = document.getElementById("quantidade-" + pratoId);
+        let valor = parseInt(input.value);
+        if (valor > 0) {
+            valor--;
+            input.value = valor;
+        }
+        atualizarBotao(pratoId);
+    }
+
+    function atualizarBotao(pratoId) {
+        let input = document.getElementById("quantidade-" + pratoId);
+        let botao = document.getElementById("botao-" + pratoId);
+        let valor = parseInt(input.value);
+        botao.disabled = valor < 1;
+    }
+
+    window.onload = function() {
+    @foreach (var prato in Model)
+    {
+        <text>atualizarBotao(@prato.PratoId);</text>
+    }
+    }
+
+        function adicionarAoCarrinho(pratoId) {
+        let input = document.getElementById("quantidade-" + pratoId);
+        let quantidade = parseInt(input.value);
+        if (quantidade < 1) return false;
+
+        let url = `/Listar/AdicionarCarrinho?pratoId=${pratoId}&quantidade=${quantidade}`;
+        window.location.href = url;
+        return false;
+    }
+</script>

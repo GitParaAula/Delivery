@@ -1,0 +1,60 @@
+﻿@model Delivery.Models.Restaurante
+
+<h1>Cadastro de Restaurante</h1>
+
+@if (ViewBag.Erro != null)
+{
+    <div style="color:red;">
+        @ViewBag.Erro
+    </div>
+}
+
+<form asp-action="Restaurante" method="post">
+
+    <div>
+        <label>Nome</label>
+        <input type="text" asp-for="Nome" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>CNPJ</label>
+        <input type="text" asp-for="CNPJ" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Telefone</label>
+        <input type="text" asp-for="Telefone" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Endereço</label>
+        <input type="text" asp-for="Endereco" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Senha</label>
+        <input type="password" asp-for="Senha" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Ativo</label>
+        <input type="checkbox" asp-for="Ativo" />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Cadastrar
+    </button>
+
+</form>

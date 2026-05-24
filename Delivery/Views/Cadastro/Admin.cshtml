@@ -1,0 +1,39 @@
+﻿@model Delivery.Models.Admin
+
+<h1>Cadastro de Admin</h1>
+
+@if (ViewBag.Erro != null)
+{
+    <div style="color:red;">
+        @ViewBag.Erro
+    </div>
+}
+
+<form asp-action="Admin" method="post">
+
+    <div>
+        <label>Nome</label>
+        <input type="text" asp-for="Nome" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Senha</label>
+        <input type="password" asp-for="Senha" required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>CPF</label>
+        <input type="number" asp-for="Cpf" required />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Cadastrar
+    </button>
+
+</form>

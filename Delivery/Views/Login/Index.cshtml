@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form method="post" asp-controller="Login" asp-action="Entrar">
+
+    <label>Tipo de Login</label>
+    <select name="tipoLogin" id="tipoLogin" onchange="alterarDocumento()">
+        <option value="Admin">Admin</option>
+        <option value="Cliente">Cliente</option>
+        <option value="Entregador">Entregador</option>
+        <option value="Restaurante">Restaurante</option>
+    </select>
+
+    <br />
+    <br />
+
+    <label id="labelDocumento">CPF</label>
+    <input type="text" name="documento" required />
+
+    <br />
+    <br />
+
+    <label>Senha</label>
+    <input type="password" name="senha" required />
+
+    <br />
+    <br />
+
+    <button type="submit">Entrar</button>
+
+</form>
+
+<br />
+
+@if (ViewBag.Erro != null)
+{
+    <p style="color:red;">
+        @ViewBag.Erro
+    </p>
+}
+
+<script>
+    function alterarDocumento() {
+
+        var tipo = document.getElementById("tipoLogin").value;
+        var label = document.getElementById("labelDocumento");
+
+        if (tipo == "Restaurante") {
+            label.innerHTML = "CNPJ";
+        }
+        else {
+            label.innerHTML = "CPF";
+        }
+    }
+</script>

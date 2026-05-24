@@ -1,0 +1,81 @@
+﻿@model List<Delivery.Models.Carrinho>
+
+<h1 style="text-align:center;">Carrinho</h1>
+
+@{
+    decimal totalCarrinho = Model.Sum(x => x.TotalItem);
+}
+
+<h2 style="text-align:center;">
+    Total: R$ @totalCarrinho
+</h2>
+
+@if (Model.Count == 0)
+{
+    <p>Carrinho vazio.</p>
+}
+else
+{
+    <table border="1" width="100%">
+        <tr>
+            <th>Item</th>
+            <th>Unitário</th>
+            <th>Quantidade</th>
+            <th>Total</th>
+            <th>Ações</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>R$ @item.PrecoUnitario</td>
+
+                <td>
+                    <form asp-action="AtualizarQuantidade" method="get">
+                        <input type="hidden" name="pratoId" value="@item.PratoId" />
+
+                        <input type="number"
+                               name="quantidade"
+                               value="@item.Quantidade"
+                               min="1" />
+
+                        <button type="submit">Atualizar</button>
+                    </form>
+                </td>
+
+                <td>R$ @item.TotalItem</td>
+
+                <td>
+                    <a asp-action="RemoverItem"
+                       asp-route-pratoId="@item.PratoId">
+                        🗑️
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <br />
+
+    <button onclick="confirmarLimpeza()">🧹 Limpar carrinho</button>
+
+    <script>
+        function confirmarLimpeza() {
+            if (confirm("Tem certeza que deseja esvaziar o carrinho?")) {
+                window.location.href = "/Listar/LimparCarrinho";
+            }
+        }
+    </script>
+
+    <br />
+    <br />
+
+    <button onclick="alert('Finalizar pedido (não implementado)')">
+        Finalizar pedido
+    </button>
+
+    <a asp-controller="Home" asp-action="Index">
+        <button>Voltar</button>
+    </a>
+}
