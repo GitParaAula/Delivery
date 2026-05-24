@@ -1,9 +1,11 @@
 using System.Diagnostics;
 using Delivery.Models;
 using Microsoft.AspNetCore.Mvc;
+using Delivery.Autenticacao;
 
 namespace Delivery.Controllers
 {
+    [SessionAuthorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,6 +29,10 @@ namespace Delivery.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult AcessoNegado()
+        {
+            return View();
         }
     }
 }

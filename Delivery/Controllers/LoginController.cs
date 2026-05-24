@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using AgenciaViagem.Database;
+using Delivery.Autenticacao;
 
 namespace Delivery.Controllers
 {
@@ -43,6 +44,10 @@ namespace Delivery.Controllers
                         return View("Index");
                     }
 
+                    HttpContext.Session.SetInt32(SessionKeys.UserId, Convert.ToInt32(reader["AdminId"]));
+                    HttpContext.Session.SetString(SessionKeys.UserName, reader["Nome"].ToString());
+                    HttpContext.Session.SetString(SessionKeys.UserRole, "Admin");
+
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -66,6 +71,10 @@ namespace Delivery.Controllers
                         ViewBag.Erro = "Senha incorreta.";
                         return View("Index");
                     }
+
+                    HttpContext.Session.SetInt32(SessionKeys.UserId, Convert.ToInt32(reader["ClienteId"]));
+                    HttpContext.Session.SetString(SessionKeys.UserName, reader["Nome"].ToString());
+                    HttpContext.Session.SetString(SessionKeys.UserRole, "Cliente");
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -91,6 +100,10 @@ namespace Delivery.Controllers
                         return View("Index");
                     }
 
+                    HttpContext.Session.SetInt32(SessionKeys.UserId, Convert.ToInt32(reader["EntregadorId"]));
+                    HttpContext.Session.SetString(SessionKeys.UserName, reader["Nome"].ToString());
+                    HttpContext.Session.SetString(SessionKeys.UserRole, "Entregador");
+
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -115,12 +128,22 @@ namespace Delivery.Controllers
                         return View("Index");
                     }
 
+                    HttpContext.Session.SetInt32(SessionKeys.UserId, Convert.ToInt32(reader["RestauranteId"]));
+                    HttpContext.Session.SetString(SessionKeys.UserName, reader["Nome"].ToString());
+                    HttpContext.Session.SetString(SessionKeys.UserRole, "Restaurante");
+
                     return RedirectToAction("Index", "Home");
                 }
 
                 ViewBag.Erro = "Tipo de login inválido.";
                 return View("Index");
             }
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Index");
         }
     }
 }
